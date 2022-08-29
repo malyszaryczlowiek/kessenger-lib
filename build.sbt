@@ -1,4 +1,4 @@
-ThisBuild / version := "0.2.0"
+ThisBuild / version := "0.2.1"
 ThisBuild / organization := "io.github.malyszaryczlowiek"
 ThisBuild / organizationName := "io.github.malyszaryczlowiek"
 ThisBuild / organizationHomepage := Some(url("https://github.com/malyszaryczlowiek/"))
@@ -55,6 +55,7 @@ lazy val commonSettings = Seq(
     // kafka
     "org.apache.kafka"  %  "kafka-clients" % "3.1.0",
 
+
     // For Tests
     "org.scalameta" %% "munit"            % "0.7.29" % Test,
     "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test
@@ -72,7 +73,8 @@ lazy val scala_2_12 = (project in file("scala-2.12"))
     libraryDependencies ++= Seq(
 
       // kafka
-      "org.apache.kafka" %% "kafka" % "3.1.0",
+      "org.apache.kafka" %% "kafka"               % "3.1.0",
+      "org.apache.kafka" %% "kafka-streams-scala" % "3.1.0",
 
       // spark
       "org.apache.spark" %% "spark-sql"  % "3.3.0",
@@ -94,7 +96,8 @@ lazy val scala_3_1 = (project in file("scala-3.1"))
     libraryDependencies ++= Seq(
 
       // kafka
-      ("org.apache.kafka" %% "kafka" % "3.1.0" ).cross(CrossVersion.for3Use2_13),
+      ("org.apache.kafka" %% "kafka"               % "3.1.0").cross(CrossVersion.for3Use2_13),
+      ("org.apache.kafka" %% "kafka-streams-scala" % "3.1.0").cross(CrossVersion.for3Use2_13),
 
       // used for serdes
       ("io.circe" %% "circe-core"    % "0.14.2").cross(CrossVersion.for3Use2_13),

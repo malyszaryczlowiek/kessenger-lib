@@ -6,7 +6,20 @@ package kessengerlibrary.kafka.configurators
 trait KafkaConfigurator {
 
   // separate Parts for Production and Testing Environment
-  def SERVERS: String
+
+  /**
+   * List of servers with domain and ports seen
+   * ouside of docker
+   * @return
+   */
+  def EXTERNAL_SERVERS: String
+
+  /**
+   * Servers seen outside of docker
+   * @return
+   */
+  def INTERNAL_SERVERS: String
+
   def CHAT_TOPIC_REPLICATION_FACTOR: Short
   def JOINING_TOPIC_REPLICATION_FACTOR: Short
 

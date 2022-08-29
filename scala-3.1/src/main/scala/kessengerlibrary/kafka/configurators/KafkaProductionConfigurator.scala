@@ -2,7 +2,9 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.kafka.configurators
 
 class KafkaProductionConfigurator extends KafkaConfigurator:
-  override def SERVERS: String = "localhost:9093,localhost:9094,localhost:9095"
+  override def EXTERNAL_SERVERS: String = "localhost:9093,localhost:9094,localhost:9095"
+
+  override def INTERNAL_SERVERS: String = "kafka1:9092,kafka2:9092,kafka3:9092"
 
   // topics
   // in production each topic has three partitions,
