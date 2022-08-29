@@ -18,3 +18,11 @@ object Chat:
       if x.timeOfLastMessage.isBefore(y.timeOfLastMessage) then 1
       else if x.timeOfLastMessage.isAfter(y.timeOfLastMessage) then -1
       else 0
+
+  given orderChatWithDate: Ordering[Chat] with
+    override def compare(x: Chat, y: Chat): Int =
+      val timeX = x.timeOfLastMessage
+      val timeY = y.timeOfLastMessage
+      if timeX.isBefore(timeY) then -1
+      else if timeX.isAfter(timeY) then 1
+      else 0    

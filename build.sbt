@@ -18,7 +18,6 @@ ThisBuild / developers := List(
   )
 )
 
-// ThisBuild / versionScheme := Some("early-semver")
 ThisBuild / description := "Some description about your project."
 ThisBuild / licenses := List("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 ThisBuild / homepage := Some(url("https://github.com/malyszaryczlowiek/kessenger-lib"))
@@ -55,9 +54,6 @@ lazy val commonSettings = Seq(
 
     // kafka
     "org.apache.kafka"  %  "kafka-clients" % "3.1.0",
-
-    // spark
-
 
     // For Tests
     "org.scalameta" %% "munit"            % "0.7.29" % Test,
@@ -98,7 +94,7 @@ lazy val scala_3_1 = (project in file("scala-3.1"))
     libraryDependencies ++= Seq(
 
       // kafka
-      ("org.apache.kafka" %% "kafka" % "3.1.0").cross(CrossVersion.for3Use2_13),
+      ("org.apache.kafka" %% "kafka" % "3.1.0" ).cross(CrossVersion.for3Use2_13),
 
       // used for serdes
       ("io.circe" %% "circe-core"    % "0.14.2").cross(CrossVersion.for3Use2_13),
