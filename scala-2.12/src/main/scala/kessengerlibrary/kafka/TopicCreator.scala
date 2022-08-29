@@ -40,7 +40,7 @@ object TopicCreator {
         val chatConfig: java.util.Map[String, String] = JavaConverters.mapAsJavaMap(
           Map(
             TopicConfig.CLEANUP_POLICY_CONFIG -> TopicConfig.CLEANUP_POLICY_DELETE,
-            TopicConfig.RETENTION_MS_CONFIG -> "-1" // keep all logs forever
+            TopicConfig.RETENTION_MS_CONFIG   -> "-1" // keep all logs forever
           )
         )
 
