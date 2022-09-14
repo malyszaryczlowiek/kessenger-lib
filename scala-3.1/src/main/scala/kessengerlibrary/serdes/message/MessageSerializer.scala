@@ -1,8 +1,10 @@
 package io.github.malyszaryczlowiek
-package kessengerlibrary.serdes
+package kessengerlibrary.serdes.message
 
 import kessengerlibrary.messages.Message
-import io.circe.syntax._
+import kessengerlibrary.messages.Message.given
+
+import io.circe.syntax.*
 import org.apache.kafka.common.serialization.Serializer
 
 class MessageSerializer extends Serializer[Message] {

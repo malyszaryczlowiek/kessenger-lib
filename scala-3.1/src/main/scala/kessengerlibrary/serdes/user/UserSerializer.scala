@@ -1,7 +1,8 @@
 package io.github.malyszaryczlowiek
-package kessengerlibrary.serdes
+package kessengerlibrary.serdes.user
 
 import kessengerlibrary.domain.User
+
 import io.circe.syntax.*
 import org.apache.kafka.common.serialization.Serializer
 

@@ -14,6 +14,7 @@ object Domain {
   type Content     = String
   type WritingId   = String
   type JoinId      = String
+  type ServerDateTime  = String
   type ZoneId      = String
   type MessageTime = Long
   type ServerTime  = Long

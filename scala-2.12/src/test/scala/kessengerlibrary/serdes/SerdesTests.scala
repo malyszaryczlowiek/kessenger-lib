@@ -6,6 +6,9 @@ import kessengerlibrary.domain.User
 import kessengerlibrary.serdes._
 import kessengerlibrary.messages.Message
 
+import io.github.malyszaryczlowiek.kessengerlibrary.serdes.message.{MessageDeserializer, MessageSerializer}
+import io.github.malyszaryczlowiek.kessengerlibrary.serdes.user.{UserDeserializer, UserSerializer}
+
 import java.time.ZoneId
 import java.util.UUID
 

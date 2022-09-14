@@ -1,4 +1,4 @@
-ThisBuild / version := "0.2.2"
+ThisBuild / version := "0.2.3"
 ThisBuild / organization := "io.github.malyszaryczlowiek"
 ThisBuild / organizationName := "io.github.malyszaryczlowiek"
 ThisBuild / organizationHomepage := Some(url("https://github.com/malyszaryczlowiek/"))
@@ -68,7 +68,7 @@ lazy val scala_2_12 = (project in file("scala-2.12"))
   .settings(
     //crossScalaVersions := supportedScalaVersions,
     idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
-    scalaVersion := scala212,
+    scalaVersion       := scala212,
     commonSettings,
     libraryDependencies ++= Seq(
 
@@ -91,7 +91,7 @@ lazy val scala_3_1 = (project in file("scala-3.1"))
   .settings(
     // crossScalaVersions := supportedScalaVersions,
     idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
-    scalaVersion := scala31,
+    scalaVersion       := scala31,
     commonSettings,
     libraryDependencies ++= Seq(
 

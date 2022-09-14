@@ -1,10 +1,12 @@
 package io.github.malyszaryczlowiek
-package kessengerlibrary.serdes
+package kessengerlibrary.serdes.user
 
 import kessengerlibrary.domain.User
 import kessengerlibrary.domain.User.given
+
 import io.circe.parser.decode
 import org.apache.kafka.common.serialization.Deserializer
+
 import java.util.UUID
 
 
