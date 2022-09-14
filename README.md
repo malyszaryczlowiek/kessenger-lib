@@ -1,7 +1,7 @@
 # kessenger-lib
 Repo is simple util library containing types, traits and classes for [Kessenger](https://github.com/malyszaryczlowiek/Kessenger) 
 project. It is written in both Scala 2.12 and Scala 3 versions, and is stored in 
-[Maven Central Repository](https://search.maven.org/) so is easy accessible with 
+[Maven Central Repository](https://mvnrepository.com/artifact/io.github.malyszaryczlowiek/kessenger-lib) so is easy accessible with 
 build tools like sbt or Maven. 
 
 
