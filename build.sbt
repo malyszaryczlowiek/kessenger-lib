@@ -1,4 +1,4 @@
-ThisBuild / version := "0.2.4"
+ThisBuild / version := "0.2.5"
 ThisBuild / organization := "io.github.malyszaryczlowiek"
 ThisBuild / organizationName := "io.github.malyszaryczlowiek"
 ThisBuild / organizationHomepage := Some(url("https://github.com/malyszaryczlowiek/"))
@@ -34,12 +34,13 @@ ThisBuild / publishMavenStyle := true
 
 
 lazy val scala212 = "2.12.16"
+lazy val scala213 = "2.13.10"
 lazy val scala31 = "3.1.1"
 lazy val supportedScalaVersions = List(scala212, scala31)
 
 
 lazy val root = (project in file("."))
-  .aggregate(scala_2_12, scala_3_1)
+  .aggregate(scala_2_12, scala_2_13, scala_3_1)
   .settings(
     // crossScalaVersions must be set to Nil on the aggregating project
     crossScalaVersions := Nil,
@@ -86,6 +87,31 @@ lazy val scala_2_12 = (project in file("scala-2.12"))
     )
     // other settings
   )
+
+
+lazy val scala_2_13 = (project in file("scala-2.13"))
+  .settings(
+    //crossScalaVersions := supportedScalaVersions,
+    idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
+    scalaVersion       := scala213,
+    commonSettings,
+    libraryDependencies ++= Seq(
+
+      // kafka
+      "org.apache.kafka" %% "kafka"               % "3.1.0",
+      "org.apache.kafka" %% "kafka-streams-scala" % "3.1.0",
+
+      // spark
+      "org.apache.spark" %% "spark-sql"  % "3.3.0",
+
+      // used for serdes
+      "io.circe" %% "circe-core"    % "0.14.2",
+      "io.circe" %% "circe-generic" % "0.14.2",
+      "io.circe" %% "circe-parser"  % "0.14.2"
+    )
+    // other settings
+  )
+
 
 lazy val scala_3_1 = (project in file("scala-3.1"))
   .settings(
