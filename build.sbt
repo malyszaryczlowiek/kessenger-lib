@@ -1,4 +1,4 @@
-ThisBuild / version := "0.2.5"
+ThisBuild / version := "0.3.0"
 ThisBuild / organization := "io.github.malyszaryczlowiek"
 ThisBuild / organizationName := "io.github.malyszaryczlowiek"
 ThisBuild / organizationHomepage := Some(url("https://github.com/malyszaryczlowiek/"))
@@ -67,7 +67,6 @@ lazy val commonSettings = Seq(
 
 lazy val scala_2_12 = (project in file("scala-2.12"))
   .settings(
-    //crossScalaVersions := supportedScalaVersions,
     idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
     scalaVersion       := scala212,
     commonSettings,
@@ -91,7 +90,6 @@ lazy val scala_2_12 = (project in file("scala-2.12"))
 
 lazy val scala_2_13 = (project in file("scala-2.13"))
   .settings(
-    //crossScalaVersions := supportedScalaVersions,
     idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
     scalaVersion       := scala213,
     commonSettings,
@@ -115,7 +113,6 @@ lazy val scala_2_13 = (project in file("scala-2.13"))
 
 lazy val scala_3_1 = (project in file("scala-3.1"))
   .settings(
-    // crossScalaVersions := supportedScalaVersions,
     idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
     scalaVersion       := scala31,
     commonSettings,

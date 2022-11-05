@@ -1,6 +1,8 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.domain
 
+import io.github.malyszaryczlowiek.kessengerlibrary.db.queries.QueryError
+
 import java.util.UUID
 
 object Domain {
@@ -21,14 +23,14 @@ object Domain {
   type Offset      = Long
   type Partition   = Int
   type GroupChat   = Boolean
-
+  type DbResponse[A]   = Either[QueryError, A]
 
   def generateChatId(uuid1: UUID, uuid2: UUID): ChatId =
     s"chat--$uuid1--$uuid2"
 
 
   def generateWritingId(uuid1: UUID, uuid2: UUID): WritingId =
-    s"whoIsWriting--$uuid1--$uuid2"
+    s"who_is_writing--$uuid1--$uuid2"
 
 
   def generateJoinId(user: UUID): JoinId =

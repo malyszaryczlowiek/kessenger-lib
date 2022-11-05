@@ -2,10 +2,12 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.domain
 
 import kessengerlibrary.domain.Domain.{Login, UserID}
-import io.circe.{Encoder, Json, Decoder, HCursor}
+import io.circe.{Encoder, Json, Decoder, HCursor, Error}
+import io.circe.parser.decode
+import io.circe.syntax._
 import java.util.UUID
 
-case class User(userId: UserID, login: Login, salt: Option[String] = None, joiningOffset: Long = 0L)
+case class User(userId: UserID, login: Login)
 
 object User {
 
@@ -22,7 +24,16 @@ object User {
     } yield {
       User(UUID.fromString(userId), login)
     }
-  
+
+
+  def parseJSONtoUser(json: String): Either[Error, User] = decode[User](json)
+
+  def parseUserToJSON(user: User): String = user.asJson.noSpaces
+
+  def parseJSONtoListOfUsers(json: String): Either[Error, List[User]] = decode[List[User]](json)
+
+  def parseListOfUsersToJSON(users: List[User]): String = users.asJson.noSpaces
+
 
   /**
    * nullUser has no login and is used to signify
