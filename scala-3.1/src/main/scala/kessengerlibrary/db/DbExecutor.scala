@@ -18,7 +18,7 @@ import scala.util.{Failure, Success, Try, Using}
 
 
 
-class DbExecutor(implicit val kafkaConfigurator: KafkaConfigurator) {
+class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
 
 
   def createUser(user: User, pass: Password, settings: Settings)(implicit connection: Connection): DbResponse[Int] = {
