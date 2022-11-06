@@ -2,25 +2,24 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.db.queries
 
 import kessengerlibrary.domain.Domain.{ChatName, Login}
-import kessengerlibrary.domain.ErrorCode
 
 
 sealed class QueryErrorMessage(mes: String) {
   override def toString: ChatName = mes
 }
-case class UserNotFound(codeNum: ErrorCode, login: Login)       extends QueryErrorMessage(s"Error ${codeNum.num}. '$login' Not Found.")
-case class NoDbConnection(codeNum: ErrorCode)                   extends QueryErrorMessage(s"Error ${codeNum.num}. Connection to DB lost. Try again later.")
-case class DataProcessingError(codeNum: ErrorCode)              extends QueryErrorMessage(s"Error ${codeNum.num}. Data Processing Error.")
-case class UndefinedError(codeNum: ErrorCode, e: String = "")   extends QueryErrorMessage(s"Error ${codeNum.num}. Undefined Error. $e")
-case class LoginTaken(codeNum: ErrorCode)                       extends QueryErrorMessage(s"Error ${codeNum.num}. Sorry Login is taken, try with another one.")
-case class AtLeastTwoUsers(codeNum: ErrorCode)                  extends QueryErrorMessage(s"Error ${codeNum.num}. To create new chat, you have to select two users at least.")
-case class NoUserSelected(codeNum: ErrorCode)                   extends QueryErrorMessage(s"Error ${codeNum.num}. No User selected.")
-case class TimeOutDBError(codeNum: ErrorCode)                   extends QueryErrorMessage(s"Error ${codeNum.num}. Timeout Error.")
-case class UserHasNoChats(codeNum: ErrorCode)                   extends QueryErrorMessage(s"Error ${codeNum.num}. User has no chats.")
-case class UnsupportedOperation(codeNum: ErrorCode)             extends QueryErrorMessage(s"Error ${codeNum.num}. Unsupported Operation.")
-case class IncorrectLoginOrPassword(codeNum: ErrorCode)         extends QueryErrorMessage(s"Error ${codeNum.num}. Incorrect Login or Password.")
-case class IncorrectPassword(codeNum: ErrorCode)                extends QueryErrorMessage(s"Error ${codeNum.num}. Incorrect Password.")
-case class ChatDoesNotExist(codeNum: ErrorCode, name: ChatName) extends QueryErrorMessage(s"Error ${codeNum.num}. Chat '$name' does not exist.")
+case class UserNotFound(login: Login)       extends QueryErrorMessage(s"'$login' Not Found.")
+case object NoDbConnection                   extends QueryErrorMessage(s"Connection to DB lost. Try again later.")
+case object DataProcessingError              extends QueryErrorMessage(s"Data Processing Error.")
+case class UndefinedError(e: String = "")   extends QueryErrorMessage(s" Error. $e")
+case object LoginTaken                       extends QueryErrorMessage(s"Sorry Login is taken, try with another one.")
+case object AtLeastTwoUsers                  extends QueryErrorMessage(s"To create new chat, you have to select two users at least.")
+case object NoUserSelected                   extends QueryErrorMessage(s"No User selected.")
+case object TimeOutDBError                   extends QueryErrorMessage(s"Timeout Error.")
+case object UserHasNoChats                   extends QueryErrorMessage(s"User has no chats.")
+case object UnsupportedOperation             extends QueryErrorMessage(s"Unsupported Operation.")
+case object IncorrectLoginOrPassword         extends QueryErrorMessage(s"Incorrect Login or Password.")
+case object IncorrectPassword                extends QueryErrorMessage(s"Incorrect Password.")
+case class ChatDoesNotExist(name: ChatName) extends QueryErrorMessage(s"Chat '$name' does not exist.")
 
 
 
