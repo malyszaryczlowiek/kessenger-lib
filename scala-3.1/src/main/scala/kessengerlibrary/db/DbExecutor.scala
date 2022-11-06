@@ -764,13 +764,6 @@ class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
 
 
 
-
-
-
-
-
-
-
   private def handleExceptionMessage[A](ex: Throwable): DbResponse[A] = {
     if (ex.getMessage == "FATAL: terminating connection due to administrator command"
       || ex.getMessage == "This connection has been closed."
@@ -791,5 +784,11 @@ class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
     else
       Left(QueryError(QueryErrorType.ERROR,QueryErrorMessage.UndefinedError(ex.getMessage)))
   }
+
+}
+
+object DbExecutor {
+
+  def apply(configurator: KafkaConfigurator): DbExecutor = new DbExecutor(configurator)
 
 }
