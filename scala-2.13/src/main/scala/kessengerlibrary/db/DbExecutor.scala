@@ -849,3 +849,10 @@ class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
   }
 
 }
+
+
+object DbExecutor {
+
+  def apply(configurator: KafkaConfigurator): DbExecutor = new DbExecutor(configurator)
+
+}
