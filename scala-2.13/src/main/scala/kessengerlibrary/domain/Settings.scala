@@ -17,9 +17,9 @@ object Settings {
   implicit object encoder extends Encoder[Settings] {
     override def apply(a: Settings): Json = {
       Json.obj(
-        ("joining_offset",   Json.fromLong(a.joiningOffset)),
-        ("session_duration", Json.fromLong(a.sessionDuration)),
-        ("zone_id",          Json.fromString(a.zoneId.getId))
+        ("joiningOffset",   Json.fromLong(a.joiningOffset)),
+        ("sessionDuration", Json.fromLong(a.sessionDuration)),
+        ("zoneId",          Json.fromString(a.zoneId.getId))
       )
     }
   }
@@ -28,9 +28,9 @@ object Settings {
   implicit object decoder extends Decoder[Settings] {
     override def apply(c: HCursor): Result[Settings] = {
       for {
-        joiningOffset   <- c.downField("joining_offset").as[Long]
-        sessionDuration <- c.downField("session_duration").as[Long]
-        zoneId          <- c.downField("zone_id").as[String]
+        joiningOffset   <- c.downField("joiningOffset").as[Long]
+        sessionDuration <- c.downField("sessionDuration").as[Long]
+        zoneId          <- c.downField("zoneId").as[String]
       } yield {
         Settings(joiningOffset, sessionDuration, ZoneId.of(zoneId))
       }

@@ -33,10 +33,10 @@ object Chat {
   implicit object encoder extends Encoder[Chat] {
     override def apply(a: Chat): Json = {
       Json.obj(
-        ("chat_id",           Json.fromString(a.chatId)),
-        ("chat_name",         Json.fromString(a.chatName)),
-        ("group_chat",        Json.fromBoolean(a.groupChat)),
-        ("last_message_time", Json.fromLong(a.lastMessageTime)),
+        ("chatId",           Json.fromString(a.chatId)),
+        ("chatName",         Json.fromString(a.chatName)),
+        ("groupChat",        Json.fromBoolean(a.groupChat)),
+        ("lastMessageTime", Json.fromLong(a.lastMessageTime)),
         ("silent",            Json.fromBoolean(a.silent))
       )
     }
@@ -46,10 +46,10 @@ object Chat {
   implicit object decoder extends Decoder[Chat] {
     override def apply(c: HCursor): Result[Chat] = {
       for {
-        chatId          <- c.downField("chat_id").as[String]
-        chatName        <- c.downField("chat_name").as[String]
-        groupChat       <- c.downField("group_chat").as[Boolean]
-        lastMessageTime <- c.downField("last_message_time").as[Long]
+        chatId          <- c.downField("chatId").as[String]
+        chatName        <- c.downField("chatName").as[String]
+        groupChat       <- c.downField("groupChat").as[Boolean]
+        lastMessageTime <- c.downField("lastMessageTime").as[Long]
         silent          <- c.downField("silent").as[Boolean]
       } yield {
         Chat(chatId, chatName, groupChat, lastMessageTime, silent)

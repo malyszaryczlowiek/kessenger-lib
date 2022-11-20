@@ -9,10 +9,9 @@ import kessengerlibrary.domain.{Chat, Domain, SessionInfo, Settings, User}
 import kessengerlibrary.kafka.configurators.KafkaConfigurator
 import kessengerlibrary.kafka.configurators.KafkaConfigurator.configurator
 
-import java.sql.{Connection, PreparedStatement, ResultSet, Savepoint}
+import java.sql.{Connection, PreparedStatement, ResultSet, Savepoint, Statement}
 import java.time.ZoneId
 import java.util.UUID
-
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.{Duration, SECONDS}
 import scala.concurrent.{Await, ExecutionContext, Future, duration}
@@ -23,7 +22,44 @@ import scala.util.{Failure, Success, Try, Using}
 class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
 
 
-  def createUser(user: User, pass: Password, settings: Settings)(implicit connection: Connection): DbResponse[Int] = {
+  def createUser(user: User, pass: Password, settings: Settings, sessionData: SessionInfo)(implicit connection: Connection): DbResponse[Int] = {
+    connection.setAutoCommit(false)
+    val beforeAnyInsertions: Savepoint = connection.setSavepoint()
+    Using(connection.createStatement()) {
+      (statement: Statement) =>
+        val sql1 = s"INSERT INTO users (user_id, login, pass) VALUES ('${user.userId.toString}', '${user.login}', '$pass') "
+        val sql2 = s"INSERT INTO settings (user_id, zone_id) VALUES ('${user.userId.toString}', '${settings.zoneId.getId}' ) "
+        val sql3 = s"INSERT INTO sessions (session_id, user_id, validity_time)  " +
+          s"VALUES ('${sessionData.sessionId.toString}', '${sessionData.userId.toString}',  ${sessionData.validityTime})"
+        statement.addBatch(sql1)
+        statement.addBatch(sql2)
+        statement.addBatch(sql3)
+        val arr = statement.executeBatch()
+        arr.sum
+    } match {
+      case Failure(ex) =>
+        connection.rollback( beforeAnyInsertions )
+        connection.setAutoCommit(true)
+        if (ex.getMessage.contains("duplicate key value violates unique constraint")) {
+          Left(QueryError(ERROR, LoginTaken))
+        }
+        else handleExceptionMessage(ex)
+      case Success(a) =>
+        if (a == 3) {
+          connection.commit()
+          connection.setAutoCommit(true)
+          Right(a)
+        } else {
+          connection.rollback(beforeAnyInsertions)
+          connection.setAutoCommit(true)
+          Left(QueryError(ERROR, DataProcessingError))
+        }
+    }
+  }
+
+
+  @deprecated("use createUser() instead.")
+  def createUserWithoutBatch(user: User, pass: Password, settings: Settings)(implicit connection: Connection): DbResponse[Int] = {
     val sql = "INSERT INTO users (user_id, login, pass) VALUES (?, ?, ?)"
     connection.setAutoCommit(false)
     val beforeAnyInsertions: Savepoint = connection.setSavepoint()
@@ -121,14 +157,11 @@ class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
 
 
   /**
-   * szukanie człowieka przy logowaniu
-   * przy logowaniu
    *
-   * @param uuid
    */
   def findUser(login: Login, pass: Password)(implicit connection: Connection): DbResponse[(User, Settings)] = {
     val sql =
-      "SELECT users.user_id, users.login, settings.joining_offset, settings.zone_id " +
+      "SELECT users.user_id, users.login, settings.joining_offset, settings.zone_id, settings.session_duration " +
         "FROM users " +
         "INNER JOIN settings " +
         "ON settings.user_id = users.user_id " +
@@ -140,11 +173,12 @@ class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
         Using(statement.executeQuery()) {
           (resultSet: ResultSet) =>
             if (resultSet.next()) {
-              val userId: UserID = resultSet.getObject[UUID]("user_id", classOf[UUID])
-              val login: Login = resultSet.getString("login")
-              val offset: Long = resultSet.getLong("joining_offset")
-              val zoneId: String = resultSet.getString("zone_id")
-              Right( (User(userId, login), Settings(joiningOffset = offset, zoneId = ZoneId.of(zoneId))) )
+              val userId: UserID  = resultSet.getObject[UUID]("user_id", classOf[UUID])
+              val login:  Login   = resultSet.getString("login")
+              val offset: Long    = resultSet.getLong("joining_offset")
+              val zoneId: String  = resultSet.getString("zone_id")
+              val sessionDur: Int = resultSet.getInt("session_duration")
+              Right( (User(userId, login), Settings(joiningOffset = offset, zoneId = ZoneId.of(zoneId), sessionDuration = sessionDur) ) )
             }
             else
               Left(QueryError(ERROR, IncorrectLoginOrPassword))

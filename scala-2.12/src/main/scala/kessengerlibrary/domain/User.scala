@@ -17,7 +17,7 @@ object User {
   implicit object encoder extends Encoder[User] {
     override def apply(a: User): Json = {
       Json.obj(
-        ("user_id", Json.fromString(a.userId.toString)),
+        ("userId", Json.fromString(a.userId.toString)),
         ("login",   Json.fromString(a.login))
       )
     }
@@ -27,7 +27,7 @@ object User {
   implicit object decoder extends Decoder[User] {
     override def apply(c: HCursor): Result[User] = {
       for {
-        userId <- c.downField("user_id").as[String]
+        userId <- c.downField("userId").as[String]
         login  <- c.downField("login").as[String]
       } yield {
         User(UUID.fromString(userId), login)

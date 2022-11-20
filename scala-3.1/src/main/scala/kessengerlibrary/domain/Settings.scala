@@ -16,9 +16,9 @@ object Settings:
 
   given encoder: Encoder[Settings] = (a: Settings) =>
     Json.obj(
-      ("joining_offset",   Json.fromLong(a.joiningOffset)  ),
-      ("session_duration", Json.fromLong(a.sessionDuration)),
-      ("zone_id",          Json.fromString(a.zoneId.getId))
+      ("joiningOffset",   Json.fromLong(a.joiningOffset)  ),
+      ("sessionDuration", Json.fromLong(a.sessionDuration)),
+      ("zoneId",          Json.fromString(a.zoneId.getId))
     )
 
 
@@ -26,9 +26,9 @@ object Settings:
 
   given decoder: Decoder[Settings] = (c: HCursor) =>
     for {
-      joiningOffset   <- c.downField("joining_offset").as[Long]
-      sessionDuration <- c.downField("session_duration").as[Long]
-      zoneId          <- c.downField("zone_id").as[String]
+      joiningOffset   <- c.downField("joiningOffset").as[Long]
+      sessionDuration <- c.downField("sessionDuration").as[Long]
+      zoneId          <- c.downField("zoneId").as[String]
     } yield {
       Settings(joiningOffset, sessionDuration, ZoneId.of(zoneId))
     }
