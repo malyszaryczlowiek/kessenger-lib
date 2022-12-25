@@ -1,10 +1,8 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes
 
-
-import kessengerlibrary.domain.User
 import kessengerlibrary.serdes._
-import kessengerlibrary.messages.Message
+import io.github.malyszaryczlowiek.kessengerlibrary.model.{Message, User}
 
 import io.github.malyszaryczlowiek.kessengerlibrary.serdes.message.{MessageDeserializer, MessageSerializer}
 import io.github.malyszaryczlowiek.kessengerlibrary.serdes.user.{UserDeserializer, UserSerializer}

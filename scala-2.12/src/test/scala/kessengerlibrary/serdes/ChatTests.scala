@@ -1,8 +1,8 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes
 
-import kessengerlibrary.domain.Chat
-import kessengerlibrary.domain.Chat.ReverseChatOrdering
+import io.github.malyszaryczlowiek.kessengerlibrary.model.Chat.ReverseChatOrdering
+import io.github.malyszaryczlowiek.kessengerlibrary.model.Chat
 
 import java.time.LocalDateTime
 import java.time.temporal.{ChronoUnit, TemporalUnit}
@@ -15,12 +15,13 @@ class ChatTests extends  munit.FunSuite {
     val chatId = "Id"
     val chatName = "name"
     val groupChat = false
-    val earlierTime = LocalDateTime.now()
-    val laterTime = earlierTime.plus(2L, ChronoUnit.MINUTES)
+    val earlierTime = System.currentTimeMillis()
+    val laterTime = earlierTime + 2000L
 
 
-    val earlier = Chat(chatId, chatName, groupChat, earlierTime)
-    val later   = Chat(chatId, chatName, groupChat, laterTime)
+
+    val earlier = Chat(chatId, chatName, groupChat, earlierTime, false)
+    val later   = Chat(chatId, chatName, groupChat, laterTime, false)
 
     val list = List(earlier, later)
     val sorted = list.sorted

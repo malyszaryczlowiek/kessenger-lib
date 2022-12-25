@@ -1,10 +1,10 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.kafka
 
-import kessengerlibrary.domain.Chat
 import kessengerlibrary.kafka.configurators.{KafkaConfigurator, KafkaProductionConfigurator, KafkaTestConfigurator}
 import kessengerlibrary.kafka.errors.{KafkaError, KafkaErrorsHandler}
-import kessengerlibrary.env._ // {Environment, Prod, Test}
+import kessengerlibrary.env._
+import io.github.malyszaryczlowiek.kessengerlibrary.model.Chat // {Environment, Prod, Test}
 
 import org.apache.kafka.clients.admin.{Admin, CreateTopicsResult, NewTopic}
 import org.apache.kafka.common.KafkaFuture

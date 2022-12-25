@@ -1,2 +1,14 @@
 *.class
 *.log
+/scala-3/target
+/scala-3/target/
+/scala-3/target/*
+/scala-2.13/target/
+/scala-2.12/target/
+/project/target/
+/project/project/
+/.idea/
+/.bsp/
+/target/
+
+/scala-3/target/scala-3.1.1/

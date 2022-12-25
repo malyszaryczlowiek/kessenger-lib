@@ -1,8 +1,7 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes.message
 
-import kessengerlibrary.messages.Message
-
+import io.github.malyszaryczlowiek.kessengerlibrary.model.Message
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 
 class MessageSerde extends Serde[Message] {

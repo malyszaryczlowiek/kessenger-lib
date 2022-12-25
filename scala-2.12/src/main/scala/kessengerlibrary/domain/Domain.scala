@@ -30,8 +30,8 @@ object Domain {
     s"chat--$uuid1--$uuid2"
 
 
-  def generateWritingId(uuid1: UUID, uuid2: UUID): WritingId =
-    s"who_is_writing--$uuid1--$uuid2"
+  def generateWritingId(chatId: ChatId): WritingId =
+    s"who_is_writing--${chatId.stripPrefix("chat--")}"
 
 
   def generateJoinId(user: UUID): JoinId =

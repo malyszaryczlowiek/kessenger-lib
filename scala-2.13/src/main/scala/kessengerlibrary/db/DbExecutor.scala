@@ -5,9 +5,12 @@ package kessengerlibrary.db
 import kessengerlibrary.db.queries._
 import kessengerlibrary.db.queries.ERROR
 import kessengerlibrary.domain.Domain.{ChatId, ChatName, DbResponse, Login, Offset, Partition, Password, UserID}
-import kessengerlibrary.domain.{Chat, Domain, SessionInfo, Settings, User}
+import kessengerlibrary.domain.Domain
 import kessengerlibrary.kafka.configurators.KafkaConfigurator
 import kessengerlibrary.kafka.configurators.KafkaConfigurator.configurator
+
+import io.github.malyszaryczlowiek.kessengerlibrary.model
+import io.github.malyszaryczlowiek.kessengerlibrary.model.{Chat, SessionInfo, Settings, User}
 
 import java.sql.{Connection, PreparedStatement, ResultSet, Savepoint}
 import java.time.ZoneId
@@ -184,7 +187,7 @@ class DbExecutor(val kafkaConfigurator: KafkaConfigurator) {
             while (resultSet.next()) {
               val sessionId: UUID = resultSet.getObject[UUID]("session_id", classOf[UUID])
               val timeValidity: Long = resultSet.getLong("validity_time")
-              buffer.addOne(SessionInfo(sessionId, userUUID, timeValidity))
+              buffer.addOne(model.SessionInfo(sessionId, userUUID, timeValidity))
             }
             Right(buffer.toList)
         } match {

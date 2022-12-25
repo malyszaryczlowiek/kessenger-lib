@@ -1,4 +1,4 @@
-ThisBuild / version := "0.3.5"
+ThisBuild / version := "0.3.6"
 ThisBuild / organization := "io.github.malyszaryczlowiek"
 ThisBuild / organizationName := "io.github.malyszaryczlowiek"
 ThisBuild / organizationHomepage := Some(url("https://github.com/malyszaryczlowiek/"))
@@ -35,12 +35,12 @@ ThisBuild / publishMavenStyle := true
 
 lazy val scala212 = "2.12.16"
 lazy val scala213 = "2.13.10"
-lazy val scala31 = "3.1.1"
-lazy val supportedScalaVersions = List(scala212, scala31)
+lazy val scala3  = "3.1.1"
+// lazy val supportedScalaVersions = List(scala212, scala31)
 
 
 lazy val root = (project in file("."))
-  .aggregate(scala_2_12, scala_2_13, scala_3_1)
+  .aggregate(scala_2_12, scala_2_13, scala_3)
   .settings(
     // crossScalaVersions must be set to Nil on the aggregating project
     crossScalaVersions := Nil,
@@ -111,10 +111,10 @@ lazy val scala_2_13 = (project in file("scala-2.13"))
   )
 
 
-lazy val scala_3_1 = (project in file("scala-3.1"))
+lazy val scala_3 = (project in file("scala-3"))
   .settings(
     idePackagePrefix   := Some("io.github.malyszaryczlowiek"),
-    scalaVersion       := scala31,
+    scalaVersion       := scala3,
     commonSettings,
     libraryDependencies ++= Seq(
 

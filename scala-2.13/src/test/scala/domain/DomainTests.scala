@@ -1,8 +1,8 @@
 package io.github.malyszaryczlowiek
 package domain
 
-import io.github.malyszaryczlowiek.kessengerlibrary.domain.User
-import io.github.malyszaryczlowiek.kessengerlibrary.domain.User.{parseJSONtoListOfUsers, parseListOfUsersToJSON}
+import io.github.malyszaryczlowiek.kessengerlibrary.model.User.{parseJSONtoListOfUsers, toJSON}
+import io.github.malyszaryczlowiek.kessengerlibrary.model.User
 
 import java.nio.charset.Charset
 import java.time.ZoneId
@@ -17,7 +17,7 @@ class DomainTests extends munit.FunSuite {
     val u2 = User(UUID.randomUUID(), "u2")
     val l  = List(u1,u2)
     println(l)
-    val json = parseListOfUsersToJSON(l)
+    val json = toJSON(l)
     parseJSONtoListOfUsers(json) match {
       case Left(_) => throw new Exception("bad")
       case Right(l2) =>
@@ -31,6 +31,14 @@ class DomainTests extends munit.FunSuite {
     val arr = ZoneId.getAvailableZoneIds.toArray.filter( zone => zone.asInstanceOf[String].contains("UTC"))
     println()
     println( ZoneId.of("UTC"))
+  }
+
+  test("zones 2") {
+    ZoneId.getAvailableZoneIds
+      .toArray
+      .map(zone => zone.asInstanceOf[String] )
+      .sorted
+      .foreach(z => println(s"\'$z\',"))
   }
 
 
