@@ -12,7 +12,8 @@ import java.time.{ZoneId, ZoneOffset}
 import java.util.UUID
 
 
-case class Message(content: String, authorId: UserID, authorLogin: Login, utcTime: Long, zoneId: ZoneId, chatId: ChatId, chatName: ChatName, groupChat: Boolean)
+case class Message(content: String, authorId: UserID, authorLogin: Login, sendingTime: Long, serverTime: Long,
+                   zoneId: ZoneId, chatId: ChatId, chatName: ChatName, groupChat: Boolean)
 
 object Message {
 
@@ -22,7 +23,8 @@ object Message {
         ( "content",      Json.fromString ( a.content           )),
         ( "authorId",     Json.fromString ( a.authorId.toString )),
         ( "authorLogin",  Json.fromString ( a.authorLogin       )),
-        ( "utcTime",      Json.fromLong   ( a.utcTime           )),
+        ( "sendingTime",  Json.fromLong   ( a.sendingTime       )),
+        ( "serverTime",   Json.fromLong   ( a.serverTime        )),
         ( "zoneId",       Json.fromString ( a.zoneId.toString   )),
         ( "chatId",       Json.fromString ( a.chatId            )),
         ( "chatName",     Json.fromString ( a.chatName          )),
@@ -50,20 +52,22 @@ object Message {
   implicit object decoder extends Decoder[Message] {
     override def apply(c: HCursor): Result[Message] = {
       for {
-        content <- c.downField("content").as[String]
-        authorId <- c.downField("authorId").as[String]
+        content     <- c.downField("content").as[String]
+        authorId    <- c.downField("authorId").as[String]
         authorLogin <- c.downField("authorLogin").as[String]
-        utcTime <- c.downField("utcTime").as[Long]
-        zoneId <- c.downField("zoneId").as[String]
-        chatId <- c.downField("chatId").as[String]
-        chatName <- c.downField("chatName").as[String]
-        groupChat <- c.downField("groupChat").as[Boolean]
+        sendingTime <- c.downField("sendingTime").as[Long]
+        serverTime  <- c.downField("serverTime").as[Long]
+        zoneId      <- c.downField("zoneId").as[String]
+        chatId      <- c.downField("chatId").as[String]
+        chatName    <- c.downField("chatName").as[String]
+        groupChat   <- c.downField("groupChat").as[Boolean]
       } yield {
         Message(
           content,
           UUID.fromString(authorId),
           authorLogin,
-          utcTime,
+          sendingTime,
+          serverTime,
           ZoneId.of(zoneId),
           chatId,
           chatName,
@@ -84,7 +88,7 @@ object Message {
 
 
   def nullMessage: Message =
-    Message("", UUID.fromString("a092dbb2-2a69-4876-bbe4-8453aa5b6979"),"NULL_LOGIN", 0L, ZoneOffset.UTC, "", "", groupChat = false)
+    Message("", UUID.fromString("a092dbb2-2a69-4876-bbe4-8453aa5b6979"),"NULL_LOGIN", 0L,0L, ZoneOffset.UTC, "", "", groupChat = false)
 
 }
 

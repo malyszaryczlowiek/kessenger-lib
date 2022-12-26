@@ -11,7 +11,8 @@ import io.circe.{Decoder, Encoder, Error, HCursor, Json}
 import java.util.UUID
 
 
-case class Invitation(fromUser: Login, toUserId: UserID, toChat: ChatName, toChatId: ChatId, myJoiningOffset: Option[Long])
+case class Invitation(fromUser: Login, toUserId: UserID, toChat: ChatName, toChatId: ChatId,
+                      sendingTime: Long, serverTime: Long = 0L, myJoiningOffset: Option[Long])
 
 object Invitation {
 
@@ -24,14 +25,18 @@ object Invitation {
           ("toUserId", Json.fromString(a.toUserId.toString)),
           ("chatName", Json.fromString(a.toChat)),
           ("chatId", Json.fromString(a.toChatId)),
+          ("sendingTime", Json.fromLong(a.sendingTime)),
+          ("serverTime", Json.fromLong(a.serverTime)),
           ("myJoiningOffset", Json.fromLong(value))
         )
       case None =>
         Json.obj(
-          ("login", Json.fromString(a.fromUser)),
-          ("toUserId", Json.fromString(a.toUserId.toString)),
-          ("chatName", Json.fromString(a.toChat)),
-          ("chatId", Json.fromString(a.toChatId)),
+          ("login",           Json.fromString(a.fromUser)),
+          ("toUserId",        Json.fromString(a.toUserId.toString)),
+          ("chatName",        Json.fromString(a.toChat)),
+          ("chatId",          Json.fromString(a.toChatId)),
+          ("sendingTime",     Json.fromLong(a.sendingTime)),
+          ("serverTime",      Json.fromLong(a.serverTime)),
           ("myJoiningOffset", Json.fromLong(0L))
         )
     }
@@ -48,6 +53,8 @@ object Invitation {
               ("toUserId", Json.fromString(a.toUserId.toString)),
               ("chatName", Json.fromString(a.toChat)),
               ("chatId", Json.fromString(a.toChatId)),
+              ("sendingTime", Json.fromLong(a.sendingTime)),
+              ("serverTime", Json.fromLong(a.serverTime)),
               ("myJoiningOffset", Json.fromLong(value))
             )
           )
@@ -60,6 +67,8 @@ object Invitation {
               ("toUserId", Json.fromString(a.toUserId.toString)),
               ("chatName", Json.fromString(a.toChat)),
               ("chatId", Json.fromString(a.toChatId)),
+              ("sendingTime", Json.fromLong(a.sendingTime)),
+              ("serverTime", Json.fromLong(a.serverTime)),
               ("myJoiningOffset", Json.fromLong(0L))
             )
           )
@@ -70,13 +79,15 @@ object Invitation {
 
   given decoder: Decoder[Invitation] = (c: HCursor) =>
     for {
-      fromUser <- c.downField("login").as[String]
-      toUserId <- c.downField("toUserId").as[String]
-      toChat   <- c.downField("chatName").as[String]
-      toChatId <- c.downField("chatId").as[String]
+      fromUser    <- c.downField("login").as[String]
+      toUserId    <- c.downField("toUserId").as[String]
+      toChat      <- c.downField("chatName").as[String]
+      toChatId    <- c.downField("chatId").as[String]
+      sendingTime <- c.downField("sendingTime").as[Long]
+      serverTime  <- c.downField("serverTime").as[Long]
       // offset   <- c.downField("myJoiningOffset").as[Long] // not required
     } yield {
-      Invitation(fromUser, UUID.fromString(toUserId), toChat, toChatId, None)
+      Invitation(fromUser, UUID.fromString(toUserId), toChat, toChatId, sendingTime, serverTime, None)
     }
 
 
@@ -90,6 +101,6 @@ object Invitation {
 
 
 
-  def nullInvitation: Invitation = Invitation("", UUID.randomUUID(), "", "", None)
+  def nullInvitation: Invitation = Invitation("", UUID.randomUUID(), "", "", 0L, 0L, None)
 
 }

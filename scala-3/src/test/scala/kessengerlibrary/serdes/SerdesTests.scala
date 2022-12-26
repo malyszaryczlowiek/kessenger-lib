@@ -30,7 +30,7 @@ class SerdesTests extends munit.FunSuite {
 
   test("Message serdes test") {
 
-    val mess = Message("Hello moto", UUID.randomUUID(),"User", 0L, ZoneId.of("Europe/Warsaw"), "chatId" , "chatName", false)
+    val mess = Message("Hello moto", UUID.randomUUID(),"User", 0L,0L, ZoneId.of("Europe/Warsaw"), "chatId" , "chatName", false)
 
     val ser  = new MessageSerializer
     val bytes = ser.serialize("", mess)
