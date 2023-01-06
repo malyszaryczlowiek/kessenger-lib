@@ -28,13 +28,16 @@ object KafkaErrorsHandler:
           message.contains("InvalidTopicException")
 
       val isServerError =
-        message.contains("TopicExistsException") ||
-          message.contains("UnsupportedVersionException") ||
+        message.contains("UnsupportedVersionException") ||
           message.contains("TimeoutException")
 
-      if isInternal then internalError
-      else if isServerError then serverError
+      val exists = message.contains("TopicExistsException")
+
+      if (isInternal) internalError
+      else if (exists) chatExistsError
+      else if (isServerError) serverError
       else undefinedErr
+
     else
       serverError
 

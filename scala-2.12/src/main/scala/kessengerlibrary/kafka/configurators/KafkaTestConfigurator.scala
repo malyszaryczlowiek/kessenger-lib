@@ -9,4 +9,5 @@ class KafkaTestConfigurator extends KafkaConfigurator {
   // topics
   override def CHAT_TOPIC_REPLICATION_FACTOR: Short = 1
   override def JOINING_TOPIC_REPLICATION_FACTOR: Short = 1
+  override def WRITING_TOPIC_REPLICATION_FACTOR: Short = 1
 }

@@ -13,6 +13,7 @@ class KafkaProductionConfigurator extends KafkaConfigurator {
   // so we can create three kafka brokers max.
   override def CHAT_TOPIC_REPLICATION_FACTOR: Short = 3
   override def JOINING_TOPIC_REPLICATION_FACTOR: Short = 3
+  override def WRITING_TOPIC_REPLICATION_FACTOR: Short = 3
 
 }
 

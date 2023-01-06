@@ -7,10 +7,10 @@ import org.apache.kafka.common.errors._
 
 object KafkaErrorsHandler {
 
-  val internalError   = Left(KafkaError(FatalError, InternalError  ))
-  val chatExistsError = Left(KafkaError(Warning,    ChatExistsError))
-  val serverError     = Left(KafkaError(FatalError, ServerError    ))
-  val undefinedErr    = Left(KafkaError(FatalError, UndefinedError ))
+  private val internalError   = Left(KafkaError(FatalError, InternalError  ))
+  private val chatExistsError = Left(KafkaError(Error,    ChatExistsError))
+  private val serverError     = Left(KafkaError(FatalError, ServerError    ))
+  private val undefinedErr    = Left(KafkaError(FatalError, UndefinedError ))
 
 
   def handleWithErrorMessage[A](ex: Throwable): Either[KafkaError, A] = {
@@ -29,11 +29,14 @@ object KafkaErrorsHandler {
           message.contains("InvalidTopicException")
 
       val isServerError =
-        message.contains("TopicExistsException") ||
-          message.contains("UnsupportedVersionException") ||
+        message.contains("UnsupportedVersionException") ||
           message.contains("TimeoutException")
 
-      if ( isInternal)  internalError
+      val exists = message.contains("TopicExistsException")
+
+
+      if ( isInternal )  internalError
+      else if ( exists ) chatExistsError
       else if (isServerError) serverError
       else undefinedErr
     } else
