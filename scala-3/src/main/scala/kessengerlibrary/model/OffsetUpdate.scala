@@ -44,7 +44,7 @@ object OffsetUpdate {
   }
 
 
-  def parseConfiguration(json: String): Either[Error, OffsetUpdate] = decode[OffsetUpdate](json)
+  def parseOffsetUpdate(json: String): Either[Error, OffsetUpdate] = decode[OffsetUpdate](json)
 
   def toJSON(c: OffsetUpdate): String = c.asJson.noSpaces
 
