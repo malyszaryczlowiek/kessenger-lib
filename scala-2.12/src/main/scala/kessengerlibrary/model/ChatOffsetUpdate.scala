@@ -1,6 +1,5 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.model
-
 import kessengerlibrary.domain.Domain.{ChatId, UserID}
 
 import io.circe.Decoder.Result
@@ -10,7 +9,7 @@ import io.circe.syntax.EncoderOps
 
 import java.util.UUID
 
-case class ChatOffsetUpdate(userId: UserID, chatId: ChatId, joiningOffset: Long, partitionOffsets: Map[Int, Long])
+case class ChatOffsetUpdate(userId: UserID, chatId: ChatId, lastMessageTime: Long, partitionOffsets: Map[Int, Long])
 
 object ChatOffsetUpdate {
 
@@ -36,10 +35,10 @@ object ChatOffsetUpdate {
       for {
         userId           <- c.downField("userId").as[String]
         chatId           <- c.downField("chatId").as[String]
-        joiningOffset    <- c.downField("joiningOffset").as[Long]
+        lastMessageTime  <- c.downField("lastMessageTime").as[Long]
         partitionOffsets <- c.downField("partitionOffsets").as[Map[Int, Long]]
       } yield {
-        ChatOffsetUpdate(UUID.fromString(userId), chatId, joiningOffset, partitionOffsets)
+        ChatOffsetUpdate(UUID.fromString(userId), chatId, lastMessageTime, partitionOffsets)
       }
     }
   }
