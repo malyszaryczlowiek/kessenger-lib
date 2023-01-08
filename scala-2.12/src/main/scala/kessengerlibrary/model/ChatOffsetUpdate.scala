@@ -10,13 +10,13 @@ import io.circe.syntax.EncoderOps
 
 import java.util.UUID
 
-case class OffsetUpdate(userId: UserID, chatId: ChatId, partitionOffsets: Map[Int, Long])
+case class ChatOffsetUpdate(userId: UserID, chatId: ChatId, joiningOffset: Long, partitionOffsets: Map[Int, Long])
 
-object OffsetUpdate {
+object ChatOffsetUpdate {
 
 
-  implicit object encoder extends Encoder[OffsetUpdate] {
-    override def apply(a: OffsetUpdate): Json = {
+  implicit object encoder extends Encoder[ChatOffsetUpdate] {
+    override def apply(a: ChatOffsetUpdate): Json = {
       Json.obj(
         ("userId", a.userId.toString.asJson),
         ("chatId", a.chatId.asJson),
@@ -31,22 +31,23 @@ object OffsetUpdate {
   }
 
 
-  implicit object decoder extends Decoder[OffsetUpdate] {
-    override def apply(c: HCursor): Result[OffsetUpdate] = {
+  implicit object decoder extends Decoder[ChatOffsetUpdate] {
+    override def apply(c: HCursor): Result[ChatOffsetUpdate] = {
       for {
         userId           <- c.downField("userId").as[String]
         chatId           <- c.downField("chatId").as[String]
+        joiningOffset    <- c.downField("joiningOffset").as[Long]
         partitionOffsets <- c.downField("partitionOffsets").as[Map[Int, Long]]
       } yield {
-        OffsetUpdate(UUID.fromString(userId), chatId, partitionOffsets)
+        ChatOffsetUpdate(UUID.fromString(userId), chatId, joiningOffset, partitionOffsets)
       }
     }
   }
 
 
-  def parseOffsetUpdate(json: String): Either[Error, OffsetUpdate] = decode[OffsetUpdate](json)
+  def parseChatOffsetUpdate(json: String): Either[Error, ChatOffsetUpdate] = decode[ChatOffsetUpdate](json)
 
-  def toJSON(c: OffsetUpdate): String = c.asJson.noSpaces
+  def toJSON(c: ChatOffsetUpdate): String = c.asJson.noSpaces
 
 
 }
