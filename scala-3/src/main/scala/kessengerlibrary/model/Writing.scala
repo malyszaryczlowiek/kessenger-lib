@@ -54,7 +54,7 @@ object Writing {
 
   def toKafkaJSON(m: Writing): String = m.asJson(kafkaEncoder).noSpaces
 
-  def parseMessage(json: String): Either[Error, Writing] = decode[Writing](json)
+  def parseWriting(json: String): Either[Error, Writing] = decode[Writing](json)
 
 
 }
