@@ -1,10 +1,11 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes.message
 
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Message.decoder
+
 
 import io.circe.parser.decode
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Message
+import kessengerlibrary.model.Message
+import kessengerlibrary.model.Message.decoder
 import org.apache.kafka.common.serialization.Deserializer
 
 class MessageDeserializer extends Deserializer[Message] {

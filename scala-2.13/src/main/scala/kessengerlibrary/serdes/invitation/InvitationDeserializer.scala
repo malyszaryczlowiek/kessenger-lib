@@ -3,7 +3,7 @@ package kessengerlibrary.serdes.invitation
 
 import org.apache.kafka.common.serialization.Deserializer
 import io.circe.parser.decode
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Invitation
+import kessengerlibrary.model.Invitation
 
 class InvitationDeserializer extends Deserializer[Invitation] {
 

@@ -88,7 +88,7 @@ object Message {
 
 
   def nullMessage: Message =
-    Message("", UUID.fromString("a092dbb2-2a69-4876-bbe4-8453aa5b6979"),"NULL_LOGIN", 0L,0L, ZoneOffset.UTC, "", "", groupChat = false)
+    Message("", UUID.fromString("a092dbb2-2a69-4876-bbe4-8453aa5b6979"),"", 0L,0L, ZoneOffset.UTC, "", "", groupChat = false)
 
 }
 

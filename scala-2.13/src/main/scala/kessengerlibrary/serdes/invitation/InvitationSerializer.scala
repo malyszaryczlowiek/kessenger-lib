@@ -2,9 +2,8 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes.invitation
 
 import org.apache.kafka.common.serialization.Serializer
-import io.circe.syntax._
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Invitation
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Invitation.toKafkaJSON
+import kessengerlibrary.model.Invitation
+import kessengerlibrary.model.Invitation.toKafkaJSON
 
 class InvitationSerializer extends Serializer[Invitation] {
 
