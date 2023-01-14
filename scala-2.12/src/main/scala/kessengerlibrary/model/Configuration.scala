@@ -2,35 +2,45 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.model
 
 import kessengerlibrary.domain.Domain.ChatId
-import kessengerlibrary.model
+import kessengerlibrary.model.Configuration.ChatPartitionsOffsets
 
 import io.circe.Decoder.Result
 import io.circe.parser.decode
-import io.circe.syntax.EncoderOps
-import io.circe.{Decoder, Encoder, Error, HCursor, Json}
+import io.circe.{Decoder, Error, HCursor}
 
 
-case class Configuration(me: User, joiningOffset: Long, chats: Map[ChatId, Map[Int, Long]])
+// case class Configuration(me: User, joiningOffset: Long, chats: Map[ChatId, Map[Int, Long]])
+case class Configuration(me: User, joiningOffset: Long, chats: List[ChatPartitionsOffsets])
 
 object Configuration {
 
-  implicit object encoder extends Encoder[Configuration] {
-    override def apply(a: Configuration): Json = {
-      Json.obj(
-        ("me", a.me.asJson ),
-        ("joiningOffset", Json.fromLong(a.joiningOffset)),
-        ("chats", a.chats.map( keyValue => {
-          Json.obj(
-            ("chat", keyValue._1.asJson),
-            ("partitionOffsets", keyValue._2.map(tup => {
-              Json.obj(
-                ("partition", Json.fromInt(tup._1)),
-                ("offset", Json.fromLong(tup._2))
-              )
-            }).asJson)
-          )
-        }).asJson)
-      )
+  private case class PartitionOffset(partition: Int, offset: Long)
+
+  private object PartitionOffset {
+    implicit object decoder extends Decoder[PartitionOffset] {
+      override def apply(c: HCursor): Result[PartitionOffset] = {
+        for {
+          partition <- c.downField("partition").as[Int]
+          offset    <- c.downField("offset").as[Long]
+        } yield {
+          PartitionOffset(partition, offset)
+        }
+      }
+    }
+  }
+
+  private[Configuration] case class ChatPartitionsOffsets(chatId: ChatId, partitionOffset: List[PartitionOffset])
+
+  private[Configuration] object  ChatPartitionsOffsets {
+    implicit object decoder extends Decoder[ChatPartitionsOffsets] {
+      override def apply(c: HCursor): Result[ChatPartitionsOffsets] = {
+        for {
+          chatId          <- c.downField("chatId").as[String]
+          partitionOffset <- c.downField("partitionOffset").as[List[PartitionOffset]]
+        } yield {
+          ChatPartitionsOffsets(chatId, partitionOffset)
+        }
+      }
     }
   }
 
@@ -40,16 +50,14 @@ object Configuration {
       for {
         me            <- c.downField("me").as[User]
         joiningOffset <- c.downField("joiningOffset").as[Long]
-        chats         <- c.downField("chats").as[Map[ChatId, Map[Int,Long]]]
+        chats         <- c.downField("chats").as[List[ChatPartitionsOffsets]]
       } yield {
-        model.Configuration(me, joiningOffset, chats)
+        Configuration(me, joiningOffset, chats)
       }
     }
   }
 
 
   def parseConfiguration(json: String): Either[Error, Configuration] = decode[Configuration](json)
-
-  def toJSON(c: Configuration): String = c.asJson.noSpaces
 
 }
