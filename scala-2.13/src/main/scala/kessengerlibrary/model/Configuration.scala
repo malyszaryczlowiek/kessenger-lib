@@ -17,9 +17,9 @@ case class Configuration(me: User, joiningOffset: Long, chats: List[ChatPartitio
 
 object Configuration {
 
-  private case class PartitionOffset(partition: Int, offset: Long)
+  case class PartitionOffset(partition: Int, offset: Long)
 
-  private object PartitionOffset {
+  object PartitionOffset {
     implicit object decoder extends Decoder[PartitionOffset] {
       override def apply(c: HCursor): Result[PartitionOffset] = {
         for {
@@ -32,9 +32,9 @@ object Configuration {
     }
   }
 
-  private[Configuration] case class ChatPartitionsOffsets(chatId: ChatId, partitionOffset: List[PartitionOffset])
+  case class ChatPartitionsOffsets(chatId: ChatId, partitionOffset: List[PartitionOffset])
 
-  private[Configuration] object  ChatPartitionsOffsets {
+  object  ChatPartitionsOffsets {
     implicit object decoder extends Decoder[ChatPartitionsOffsets] {
       override def apply(c: HCursor): Result[ChatPartitionsOffsets] = {
         for {
