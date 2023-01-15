@@ -1,8 +1,6 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.model
 
-import kessengerlibrary.domain.Domain.ChatId
-import kessengerlibrary.model.Configuration.ChatPartitionsOffsets
 
 import io.circe.Decoder.Result
 import io.circe.parser.decode
