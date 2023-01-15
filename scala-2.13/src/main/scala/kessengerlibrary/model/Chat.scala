@@ -58,18 +58,6 @@ object Chat {
     }
   }
 
-  implicit object newChatIdDecoder extends Decoder[String] {
-    override def apply(c: HCursor): Result[String] = {
-      for {
-        chatId <- c.downField("chatId").as[String]
-      } yield {
-        chatId
-      }
-    }
-  }
-
-
-  def parseNewChatId(json: String):  Either[Error, String] = decode[String](json)(newChatIdDecoder)
 
   def parseJSONtoChat(json: String): Either[Error, Chat] = decode[Chat](json)
 

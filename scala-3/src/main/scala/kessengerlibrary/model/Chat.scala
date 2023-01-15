@@ -47,16 +47,7 @@ object Chat:
     } yield {
       Chat(chatId, chatName, groupChat, lastMessageTime, silent)
     }
-
-  given newChatIdDecoder : Decoder[String]  = (c: HCursor) =>
-      for {
-        chatId <- c.downField("chatId").as[String]
-      } yield {
-        chatId
-      }
-
-
-  def parseNewChatId(json: String): Either[Error, String] = decode[String](json)(newChatIdDecoder)
+    
 
   def parseJSONtoChat(json: String): Either[Error, Chat] = decode[Chat](json)
 

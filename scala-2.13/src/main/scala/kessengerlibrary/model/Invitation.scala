@@ -14,10 +14,10 @@ import java.util.UUID
 case class Invitation(fromUser: Login, toUserId: UserID, toChat: ChatName, toChatId: ChatId,
                       sendingTime: Long, serverTime: Long = 0L, myJoiningOffset: Option[Long])
 
+
+
 object Invitation {
-
-
-
+  
   implicit object kafkaEncoder extends Encoder[Invitation] {
     override def apply(a: Invitation): Json = {
       a.myJoiningOffset match {
