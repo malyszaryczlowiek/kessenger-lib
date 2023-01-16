@@ -12,7 +12,8 @@ import java.util.UUID
 
 
 case class Invitation(fromUser: Login, toUserId: UserID, toChat: ChatName, toChatId: ChatId,
-                      sendingTime: Long, serverTime: Long = 0L, myJoiningOffset: Option[Long])
+                      sendingTime: Long, serverTime: Long = 0L, partitionOffsets: List[PartitionOffset],
+                      myJoiningOffset: Option[Long])
 
 
 
@@ -29,6 +30,7 @@ object Invitation {
             ("chatId", Json.fromString(a.toChatId)),
             ("sendingTime", Json.fromLong(a.sendingTime)),
             ("serverTime", Json.fromLong(a.serverTime)),
+            ("partitionOffsets", a.partitionOffsets.map(_.asJson).asJson),
             ("myJoiningOffset", Json.fromLong(value))
           )
         case None =>
@@ -39,6 +41,7 @@ object Invitation {
             ("chatId", Json.fromString(a.toChatId)),
             ("sendingTime", Json.fromLong(a.sendingTime)),
             ("serverTime", Json.fromLong(a.serverTime)),
+            ("partitionOffsets", a.partitionOffsets.map(_.asJson).asJson),
             ("myJoiningOffset", Json.fromLong(0L))
           )
       }
@@ -59,6 +62,7 @@ object Invitation {
                 ("chatId", Json.fromString(a.toChatId)),
                 ("sendingTime", Json.fromLong(a.sendingTime)),
                 ("serverTime", Json.fromLong(a.serverTime)),
+                ("partitionOffsets", a.partitionOffsets.map(_.asJson).asJson),
                 ("myJoiningOffset", Json.fromLong(value))
               )
             )
@@ -73,6 +77,7 @@ object Invitation {
                 ("chatId", Json.fromString(a.toChatId)),
                 ("sendingTime", Json.fromLong(a.sendingTime)),
                 ("serverTime", Json.fromLong(a.serverTime)),
+                ("partitionOffsets", a.partitionOffsets.map(_.asJson).asJson),
                 ("myJoiningOffset", Json.fromLong(0L))
               )
             )
@@ -91,9 +96,11 @@ object Invitation {
         toChatId    <- c.downField("chatId").as[String]
         sendingTime <- c.downField("sendingTime").as[Long]
         serverTime  <- c.downField("serverTime").as[Long]
+        partOffsets <- c.downField("partitionOffsets").as[List[PartitionOffset]]
         // offset   <- c.downField("myJoiningOffset").as[Long] // not required
       } yield {
-        Invitation(fromUser, UUID.fromString(toUserId), toChat, toChatId, sendingTime, serverTime, None)
+        Invitation(fromUser, UUID.fromString(toUserId), toChat, toChatId,
+          sendingTime, serverTime,partOffsets, None)
       }
     }
   }
@@ -105,6 +112,6 @@ object Invitation {
 
   def toWebsocketJSON(i: Invitation): String = i.asJson(websocketEncoder).noSpaces
 
-  def nullInvitation: Invitation = Invitation("", UUID.randomUUID(), "", "",0L, 0L, None)
+  def nullInvitation: Invitation = Invitation("", UUID.randomUUID(), "", "",0L, 0L, List.empty, None)
 
 }
