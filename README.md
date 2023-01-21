@@ -8,13 +8,13 @@ build tools like sbt or Maven.
 Simply add following line to your build.sbt file:
 
 ```
-libraryDependencies ++= "io.github.malyszaryczlowiek" %% "kessenger-lib" % "0.3.21"
+libraryDependencies ++= "io.github.malyszaryczlowiek" %% "kessenger-lib" % "0.3.22"
 ```
 or Maven one (example with scala 2.12):
 ```
 <dependency>
   <groupId>io.github.malyszaryczlowiek</groupId>
   <artifactId>kessenger-lib_2.12</artifactId>
-  <version>0.3.21</version>
+  <version>0.3.22</version>
 </dependency>
 ```

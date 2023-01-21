@@ -10,7 +10,7 @@ import io.circe.syntax.EncoderOps
 
 import java.util.UUID
 
-case class ChatOffsetUpdate(userId: UserID, chatId: ChatId, lastMessageTime: Long, partitionOffsets: Map[Int, Long])
+case class ChatOffsetUpdate(userId: UserID, chatId: ChatId, lastMessageTime: Long, partitionOffsets: List[PartitionOffset])
 
 object ChatOffsetUpdate {
 
@@ -20,12 +20,7 @@ object ChatOffsetUpdate {
       Json.obj(
         ("userId", a.userId.toString.asJson),
         ("chatId", a.chatId.asJson),
-        ("partitionOffsets", a.partitionOffsets.toList.map(tup => {
-          Json.obj(
-            ("partition", Json.fromInt(tup._1)),
-            ("offset", Json.fromLong(tup._2))
-          )
-        }).asJson)
+        ("partitionOffsets", a.partitionOffsets.asJson)
       )
     }
   }
@@ -37,7 +32,7 @@ object ChatOffsetUpdate {
         userId           <- c.downField("userId").as[String]
         chatId           <- c.downField("chatId").as[String]
         lastMessageTime  <- c.downField("lastMessageTime").as[Long]
-        partitionOffsets <- c.downField("partitionOffsets").as[Map[Int, Long]]
+        partitionOffsets <- c.downField("partitionOffsets").as[List[PartitionOffset]]
       } yield {
         ChatOffsetUpdate(UUID.fromString(userId), chatId, lastMessageTime, partitionOffsets)
       }
