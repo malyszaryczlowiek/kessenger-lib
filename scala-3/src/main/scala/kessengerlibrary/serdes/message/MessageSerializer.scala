@@ -1,7 +1,7 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes.message
 
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Message.{encoder, toKafkaJSON}
+import io.github.malyszaryczlowiek.kessengerlibrary.model.Message.{kafkaEncoder, toKafkaJSON}
 
 import io.circe.syntax.*
 import io.github.malyszaryczlowiek.kessengerlibrary.model.Message
