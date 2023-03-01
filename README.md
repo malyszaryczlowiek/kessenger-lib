@@ -15,6 +15,6 @@ or Maven one (example with scala 2.12):
 <dependency>
   <groupId>io.github.malyszaryczlowiek</groupId>
   <artifactId>kessenger-lib_2.12</artifactId>
-  <version>0.3.23</version>
+  <version>0.3.23</version> 
 </dependency>
 ```
