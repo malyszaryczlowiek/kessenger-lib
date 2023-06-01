@@ -10,7 +10,7 @@ import java.time.ZoneId
 
 
 
-case class Settings(joiningOffset: Long = 0L, sessionDuration: Long = 900L, zoneId: ZoneId = ZoneId.of("UTC"))
+case class Settings(joiningOffset: Long = 0L, sessionDuration: Long = 900000L, zoneId: ZoneId = ZoneId.of("UTC"))
 
 object Settings {
 

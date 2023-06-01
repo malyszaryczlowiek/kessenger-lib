@@ -3,9 +3,10 @@ package kessengerlibrary.serdes.message
 
 
 
-import io.circe.parser.decode
+
 import kessengerlibrary.model.Message
 import kessengerlibrary.model.Message.decoder
+import io.circe.parser.decode
 import org.apache.kafka.common.serialization.Deserializer
 
 class MessageDeserializer extends Deserializer[Message] {
