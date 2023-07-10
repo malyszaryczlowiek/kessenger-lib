@@ -1,7 +1,6 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.kafka
 
-
 import kessengerlibrary.kafka.errors.{KafkaError, KafkaErrorsHandler}
 import kessengerlibrary.model.Chat
 
@@ -13,18 +12,12 @@ import java.util.Properties
 import scala.jdk.javaapi.CollectionConverters
 import scala.util.{Failure, Success, Using}
 
-//import org.apache.logging.log4j.LogManager
-//import org.apache.logging.log4j.Logger
-
 
 class TopicCreator
 
 object TopicCreator {
 
 
-  // private var oAdmin: Option[Admin] = None
-
-  // private val logger: Logger = LogManager.getLogger(classOf[TopicCreator])
 
   /**
    *
@@ -57,7 +50,7 @@ object TopicCreator {
       case Failure(ex) =>
         KafkaErrorsHandler.handleWithErrorMessage[Chat](ex) match {
           case Left(kafkaError: KafkaError) =>
-            Error(s"Cannot create topic ${setup.name}. ${kafkaError.description}")
+            Error(s"Cannot create topic '${setup.name}'. ${kafkaError.description}")
           case Right(_) => // not reachable
             Error(s"Undefined topic creation error.")
         }
