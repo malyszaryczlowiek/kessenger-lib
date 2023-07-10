@@ -1,73 +1,67 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.kafka
 
-import kessengerlibrary.kafka.configurators.{KafkaConfigurator, KafkaProductionConfigurator, KafkaTestConfigurator}
+
 import kessengerlibrary.kafka.errors.{KafkaError, KafkaErrorsHandler}
-import kessengerlibrary.env._
-import io.github.malyszaryczlowiek.kessengerlibrary.model.Chat // {Environment, Prod, Test}
+import kessengerlibrary.model.Chat
 
 import org.apache.kafka.clients.admin.{Admin, CreateTopicsResult, NewTopic}
 import org.apache.kafka.common.KafkaFuture
-import org.apache.kafka.common.config.TopicConfig
 import org.apache.kafka.streams.StreamsConfig
 
 import java.util.Properties
 import scala.collection.JavaConverters
 import scala.util.{Failure, Success, Using}
 
+//import org.apache.logging.log4j.LogManager
+//import org.apache.logging.log4j.Logger
+
+
+class TopicCreator
+
 object TopicCreator {
+
+
+  // private var oAdmin: Option[Admin] = None
+
+  // private val logger: Logger = LogManager.getLogger(classOf[TopicCreator])
 
   /**
    *
    * @param topicName
    */
-  def createTopic(topicName: String, env: Environment): Unit = {
-    var configurator: KafkaConfigurator = null //
-    env match {
-      case Prod => configurator = new KafkaProductionConfigurator
-      case Test => configurator = new KafkaTestConfigurator
-    }
+  def createTopic(setup: TopicSetup): TopicCreationResult = {
+
     val adminProperties: Properties = new Properties()
-    adminProperties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, configurator.INTERNAL_SERVERS)
+    adminProperties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, setup.servers)
 
     Using(Admin.create(adminProperties)) {
       admin =>
-
-        val partitionsNum: Int = configurator.CHAT_TOPIC_PARTITIONS_NUMBER
-        val replicationFactor: Short = configurator.CHAT_TOPIC_REPLICATION_FACTOR
-
-
-        val chatConfig: java.util.Map[String, String] = JavaConverters.mapAsJavaMap(
-          Map(
-            TopicConfig.CLEANUP_POLICY_CONFIG -> TopicConfig.CLEANUP_POLICY_DELETE,
-            TopicConfig.RETENTION_MS_CONFIG   -> "-1" // keep all logs forever
-          )
-        )
-
+        val chatConfig: java.util.Map[String, String] = JavaConverters.mapAsJavaMap( setup.otherConfig )
         // we create  topic
         val result: CreateTopicsResult = admin.createTopics(
           java.util.Collections.singletonList(
-            new NewTopic(topicName, partitionsNum, replicationFactor).configs(chatConfig)
+            new NewTopic(setup.name, setup.partitionNumber, setup.replicationFactor).configs(chatConfig)
           )
         )
 
         // extract task of topic creation
-        val talkFuture: KafkaFuture[Void] = result.values().get(topicName)
+        val talkFuture: KafkaFuture[Void] = result.values().get(setup.name)
 
         // we wait patiently to create topic or get error.
         talkFuture.get //(5L, TimeUnit.SECONDS)
 
         // simply return topic name as proof of creation
-        topicName
+        setup.name
     } match {
       case Failure(ex) =>
         KafkaErrorsHandler.handleWithErrorMessage[Chat](ex) match {
           case Left(kafkaError: KafkaError) =>
-            println(s"Cannot create topic. ${kafkaError.description}")
+            Error(s"Cannot create topic ${setup.name}. ${kafkaError.description}")
           case Right(_) => // not reachable
+            Error(s"Undefined topic creation error.")
         }
-      case Success(topic) =>
-        println(s"Topic $topic created.")
+      case Success(topic) => Done
     }
   }
 

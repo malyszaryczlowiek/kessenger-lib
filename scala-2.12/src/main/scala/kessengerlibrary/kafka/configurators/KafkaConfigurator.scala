@@ -3,6 +3,7 @@ package kessengerlibrary.kafka.configurators
 
 
 // earlier was messages.kafkaConfigurations
+@deprecated
 trait KafkaConfigurator {
 
   // separate Parts for Production and Testing Environment

@@ -1,4 +1,4 @@
-ThisBuild / version := "0.3.24"
+ThisBuild / version := "0.3.25"
 ThisBuild / organization := "io.github.malyszaryczlowiek"
 ThisBuild / organizationName := "io.github.malyszaryczlowiek"
 ThisBuild / organizationHomepage := Some(url("https://github.com/malyszaryczlowiek/"))
@@ -35,7 +35,7 @@ ThisBuild / publishMavenStyle := true
 
 lazy val scala212 = "2.12.16"
 lazy val scala213 = "2.13.10"
-lazy val scala3  = "3.1.1"
+lazy val scala3   = "3.1.1"
 // lazy val supportedScalaVersions = List(scala212, scala31)
 
 

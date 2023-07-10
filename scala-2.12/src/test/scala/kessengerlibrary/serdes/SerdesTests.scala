@@ -2,8 +2,8 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.serdes
 
 import kessengerlibrary.serdes._
-import io.github.malyszaryczlowiek.kessengerlibrary.model.{Message, User}
 
+import io.github.malyszaryczlowiek.kessengerlibrary.model.{Message, PartitionOffset, User}
 import io.github.malyszaryczlowiek.kessengerlibrary.serdes.message.{MessageDeserializer, MessageSerializer}
 import io.github.malyszaryczlowiek.kessengerlibrary.serdes.user.{UserDeserializer, UserSerializer}
 
@@ -30,7 +30,7 @@ class SerdesTests extends munit.FunSuite {
 
   test("Message serdes test") {
 
-    val mess = Message("Hello moto", UUID.randomUUID(),"User", 0L, ZoneId.of("Europe/Warsaw"), "chatId" , "chatName", false)
+    val mess = Message("Hello moto", UUID.randomUUID(),"User", 0L, 0L, ZoneId.of("Europe/Warsaw"), "chatId" , "chatName",  false, None)
 
     val ser  = new MessageSerializer
     val bytes = ser.serialize("", mess)

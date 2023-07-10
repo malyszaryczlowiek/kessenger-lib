@@ -1,6 +1,8 @@
 package io.github.malyszaryczlowiek
 package kessengerlibrary.kafka.configurators
 
+
+@deprecated
 class KafkaTestConfigurator extends KafkaConfigurator:
   override def EXTERNAL_SERVERS: String = "localhost:9093" // in test environment we have only one kafka broker
 

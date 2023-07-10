@@ -2,6 +2,7 @@ package io.github.malyszaryczlowiek
 package kessengerlibrary.kafka.configurators
 
 
+@deprecated
 trait KafkaConfigurator {
 
   /**
