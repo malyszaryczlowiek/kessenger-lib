@@ -17,7 +17,7 @@ object User {
   implicit object encoder extends Encoder[User] {
     override def apply(a: User): Json = {
       Json.obj(
-        ("userId", Json.fromString(a.userId.toString)),
+        ("userId",  Json.fromString(a.userId.toString)),
         ("login",   Json.fromString(a.login))
       )
     }
