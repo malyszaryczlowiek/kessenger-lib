@@ -3,6 +3,7 @@ package kessengerlibrary.serdes
 
 import kessengerlibrary.serdes._
 
+import io.github.malyszaryczlowiek.kessengerlibrary.model.postanalysis.WindowedAvgServerDelayByZone
 import io.github.malyszaryczlowiek.kessengerlibrary.model.{Message, PartitionOffset, User}
 import io.github.malyszaryczlowiek.kessengerlibrary.serdes.message.{MessageDeserializer, MessageSerializer}
 import io.github.malyszaryczlowiek.kessengerlibrary.serdes.user.{UserDeserializer, UserSerializer}
@@ -39,6 +40,18 @@ class SerdesTests extends munit.FunSuite {
     val mess2 = deser.deserialize("", bytes)
 
     assert(mess == mess2)
+
+  }
+
+  test("checking nullity") {
+
+    val n1 = WindowedAvgServerDelayByZone.nullMessage
+    val n2 = WindowedAvgServerDelayByZone(null, null, null, 0L)
+    val n3 = n2.copy(delayMS = 1L)
+
+    assert(n1.equals(n2))
+    assert( ! n2.equals(n3))
+
 
   }
 
